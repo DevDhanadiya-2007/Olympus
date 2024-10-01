@@ -9,7 +9,6 @@ import { Eye, EyeOff, X, Rocket, Mail, Lock, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import baseUrl from '@/lib/envLogic';
 
 const emailSchema = z.string().email('Invalid email address');
 const passwordSchema = z
@@ -86,8 +85,7 @@ export default function SpaceSignupPage() {
     };
 
     const googleHandle = async () => {
-        const url = `${baseUrl()}/api/auth/google`; // Use baseUrl to get the active URL
-        window.open(url, "_self");
+        window.open("api/auth/google", "_self");
     }
 
     return (
