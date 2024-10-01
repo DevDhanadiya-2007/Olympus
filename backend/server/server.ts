@@ -13,7 +13,7 @@ import connectDB from "./utils/database";
 import './utils/passport';
 
 dotenv.config();
-
+const PORT = Number(process.env.PORT) || 3000
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -47,8 +47,8 @@ const initServer = async () => {
     server.use('/api/wallet', walletRoutes);
     server.all("*", (req, res) => handle(req, res));
 
-    server.listen(3000, () => {
-        console.log("Server is listening on PORT = 3000")
+    server.listen(PORT, () => {
+        console.log(`Server is listening on PORT = ${PORT}`)
     });
 };
 
