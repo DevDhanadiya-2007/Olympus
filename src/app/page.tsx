@@ -15,23 +15,31 @@ const Star: React.FC<StarProps> = ({ top, left, size, delay }) => (
   />
 )
 
-const ShootingStar = () => (
-  <motion.div
-    className="absolute w-0.5 h-0.5 bg-white"
-    style={{
+const ShootingStar = () => {
+  const [position, setPosition] = useState({ top: '0%', left: '0%' })
+
+  useEffect(() => {
+    setPosition({
       top: Math.random() * 100 + '%',
       left: Math.random() * 100 + '%',
-    }}
-    initial={{ opacity: 1, scale: 0 }}
-    animate={{
-      opacity: [1, 0],
-      scale: [0, 15],
-      left: [null, '100%'],
-      top: [null, '100%'],
-    }}
-    transition={{ duration: 0.8, delay: Math.random() * 10, repeat: Infinity }}
-  />
-)
+    })
+  }, [])
+
+  return (
+    <motion.div
+      className="absolute w-0.5 h-0.5 bg-white"
+      style={position}
+      initial={{ opacity: 1, scale: 0 }}
+      animate={{
+        opacity: [1, 0],
+        scale: [0, 15],
+        left: [position.left, '100%'],
+        top: [position.top, '100%'],
+      }}
+      transition={{ duration: 0.8, delay: Math.random() * 10, repeat: Infinity }}
+    />
+  )
+}
 
 export default function Page() {
   const [stars, setStars] = useState<StarProps[]>([])

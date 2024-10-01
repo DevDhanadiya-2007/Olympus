@@ -9,6 +9,7 @@ import { Eye, EyeOff, X, Rocket, Mail, Lock, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import baseUrl from '@/lib/envLogic';
 
 const emailSchema = z.string().email('Invalid email address');
 const passwordSchema = z
@@ -45,7 +46,7 @@ export default function SpaceSignupPage() {
         if (emailError || passwordError) return;
 
         try {
-            const response = await axios.post(`http://localhost:3000/api/auth/signup`, { email, password });
+            const response = await axios.post(`/api/auth/signup`, { email, password });
             if (response.status === 201) {
                 toast.success("Signup Successful! 🎉", {
                     position: "bottom-right",
@@ -85,7 +86,8 @@ export default function SpaceSignupPage() {
     };
 
     const googleHandle = async () => {
-        window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`, "_self")
+        const url = `${baseUrl()}/api/auth/google`; // Use baseUrl to get the active URL
+        window.open(url, "_self");
     }
 
     return (

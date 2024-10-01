@@ -12,6 +12,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import { setAuthenticated } from '@/store/slice/authSlice';
 import 'react-toastify/dist/ReactToastify.css';
+import baseUrl from '@/lib/envLogic';
 
 const emailSchema = z.string().email('Invalid email address');
 const passwordSchema = z.string().min(1, 'Password is required');
@@ -106,7 +107,8 @@ export default function LoginPage() {
     };
 
     const googleHandle = async () => {
-        window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`, "_self")
+        const url = `${baseUrl()}/api/auth/google`;
+        window.open(url, "_self");
     }
 
     return (
