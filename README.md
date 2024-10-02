@@ -35,6 +35,7 @@ Olympus is built using the following cutting-edge technologies:
 ---
 
 ## 🚀 Getting Started
+
 ### Folder Strucutre
 
 ```
