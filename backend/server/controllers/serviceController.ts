@@ -1,20 +1,22 @@
 import { Response, Request } from "express";
-
 import generateMnemonic from "../../services/mnemonic";
+import { encrypt, generateKey } from "../../services/encryption";
 
 const mnemonicService = async (req: Request, res: Response) => {
-    if (!res.locals.isAuthenticated) {
-        return res.status(403).json({ message: "Unauthorized access" });
-    }
-
     try {
         const response = await generateMnemonic();
+        const key = generateKey();
+        const encryptedMnemonic = encrypt(response.mnemonic, key);
+
         res.status(200).json({
-            message: "Generate Success",
-            mnemonic: response?.mnemonic,
-            publicKey: response?.publicKey
+            message: "Generation Success",
+            mnemonic: response.mnemonic,
+            publicKey: response.publicKey,
+            encryptedMnemonic,
+            key
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "Failed to generate mnemonic" });
     }
 };

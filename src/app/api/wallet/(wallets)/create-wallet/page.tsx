@@ -12,6 +12,10 @@ import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
 import { MnemonicResponse } from "@/types";
+import { saveMnemonic } from "@/lib/indexedDB";
+import { encrypt, createHash } from "backend/services/encryption";
+import { checkIndexedDbForMnemonic } from "@/lib/dbActions";
+import { useRouter } from "next/navigation";
 
 const StarField = () => {
     return (
@@ -49,6 +53,7 @@ export default function Page() {
     const [hasGenerated, setHasGenerated] = useState<boolean>(false);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);
+    const router = useRouter()
 
     useEffect(() => {
         if (isLoadingMnemonic) {
@@ -69,6 +74,21 @@ export default function Page() {
         if (hasGenerated) return;
         setIsLoadingMnemonic(true);
         setProgress(0);
+
+        const respone = await checkIndexedDbForMnemonic()
+        if (respone) {
+            toast.error("Mnemonic already exists.", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setIsLoadingMnemonic(false)
+            return
+        }
 
         try {
             const response: AxiosResponse<MnemonicResponse> = await axios.post('/api/wallet/generate-mnemonic');
@@ -124,6 +144,43 @@ export default function Page() {
             });
         }
     }, [mnemonic]);
+
+    const handleProceed = async () => {
+        if (!mnemonic || !isChecked) {
+            return
+        }
+
+        const hashKey = "Olympus"
+        const key = await createHash(hashKey)
+        try {
+            const encryptedMnemonic = encrypt(mnemonic, key)
+            await saveMnemonic('user-mnemonic', encryptedMnemonic)
+            toast.success("Mnemonic securely stored in your browser! 💾", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setTimeout(() => {
+                router.push('/dashboard')
+            }, (1000));
+        } catch (error) {
+            console.error('Error encrypting or saving the mnemonic:', error);
+
+            toast.error("Failed to store mnemonic securely.", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#0a0a2e] to-[#1a1a4f] flex items-center justify-center p-4 overflow-hidden">
@@ -260,6 +317,7 @@ export default function Page() {
                             <Button
                                 className="w-full py-6 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition-all duration-300 ease-in-out flex items-center justify-center space-x-2"
                                 disabled={!isChecked}
+                                onClick={handleProceed}
                             >
                                 <span>Proceed to Wallet</span>
                                 <ArrowRight size={24} />
