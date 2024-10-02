@@ -15,22 +15,29 @@ passport.use(new GoogleStrategy({
             let user = await User.findOne({ googleId: profile.id });
 
             if (!user) {
-                const email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
+                const email = profile.emails?.[0]?.value;
+
                 if (!email) {
                     return done(new Error("No email found"), undefined);
                 }
-                user = new User({
-                    googleId: profile.id,
-                    email: email,
-                });
-                await user.save();
+
+                user = await User.findOne({ email });
+
+                if (!user) {
+                    user = new User({ googleId: profile.id, email });
+                    await user.save();
+                } else {
+                    user.googleId = profile.id;
+                    await user.save();
+                }
             }
 
             return done(null, user);
         } catch (error) {
             return done(error, undefined);
         }
-    }));
+    }
+));
 
 passport.serializeUser((user: any, done) => {
     done(null, user._id);

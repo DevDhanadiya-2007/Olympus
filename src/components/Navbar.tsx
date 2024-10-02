@@ -1,55 +1,61 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, BarChart2, LogIn, LogOut, LucideProps } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Wallet, BarChart2, LogIn, LogOut, User, LucideProps } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
-import { RootState } from '../store/store';
-import { useAuth } from '../hooks/useAuth';
+import { RootState } from '../store/store'
+import { useAuth } from '../hooks/useAuth'
 
 type NavItem = {
-    name: string;
-    icon: React.FC<LucideProps>;
-    href: string;
-};
+    name: string
+    icon: React.FC<LucideProps>
+    href: string
+}
 
 const Navbar: React.FC = () => {
-    const [activeItem, setActiveItem] = useState<string | null>(null);
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const router = useRouter();
-    const pathname = usePathname();
-    const { handleLogout, handleLogin, checkAuthStatus } = useAuth();
+    const [activeItem, setActiveItem] = useState<string | null>(null)
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
+    const router = useRouter()
+    const pathname = usePathname()
+    const { handleLogout, handleLogin, checkAuthStatus } = useAuth()
 
     const navItems: NavItem[] = [
         { name: 'Wallet', icon: Wallet, href: '/api/wallet' },
         { name: 'Dashboard', icon: BarChart2, href: '/dashboard' },
-    ];
+    ]
 
     const setActiveNavItem = useCallback(() => {
-        const matchingNavItem = navItems.find(({ href }) => pathname.startsWith(href));
+        const matchingNavItem = navItems.find(({ href }) => pathname.startsWith(href))
         if (matchingNavItem) {
-            setActiveItem(matchingNavItem.name.toLowerCase());
+            setActiveItem(matchingNavItem.name.toLowerCase())
         } else {
             setActiveItem(null)
         }
-    }, [pathname, navItems]);
+    }, [pathname, navItems])
 
     useEffect(() => {
-        checkAuthStatus();
-    }, [checkAuthStatus]);
+        checkAuthStatus()
+    }, [checkAuthStatus])
 
     useEffect(() => {
-        setActiveNavItem();
-    }, [pathname, setActiveNavItem]);
+        setActiveNavItem()
+    }, [pathname, setActiveNavItem])
 
     const handleLogoClick = useCallback(() => {
-        router.push('/');
-    }, [router]);
+        router.push('/')
+    }, [router])
 
     return (
         <motion.nav
@@ -116,34 +122,62 @@ const Navbar: React.FC = () => {
                             </motion.div>
                         ))}
                     </AnimatePresence>
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                    >
-                        <Button
-                            variant="outline"
-                            className="bg-[#1a2233] text-[#00c8ff] border border-[#00c8ff] transition-all duration-300 flex items-center justify-center text-sm px-3 py-1"
-                            onClick={isAuthenticated ? handleLogout : handleLogin}
-                            style={{
-                                boxShadow: '0 2px 8px rgba(0, 200, 255, 0.2)',
-                            }}
-                        >
-                            {isAuthenticated ? (
-                                <>
-                                    <LogOut className="h-4 w-4 mr-1" />
-                                    Logout
-                                </>
-                            ) : (
-                                <>
+                    <AnimatePresence>
+                        {isAuthenticated ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="relative h-8 w-8 rounded-full"
+                                        >
+                                            <motion.div
+                                                className="h-8 w-8 rounded-full bg-[#1a2233] flex items-center justify-center"
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                <User className="h-5 w-8 text-[#00c8ff]" />
+                                            </motion.div>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={handleLogout}>
+                                            <LogOut className="mr-2 h-4 w-4" />
+                                            <span>Log out</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <Button
+                                    variant="outline"
+                                    className="bg-[#1a2233] text-[#00c8ff] border border-[#00c8ff] transition-all duration-300 flex items-center justify-center text-sm px-3 py-1"
+                                    onClick={handleLogin}
+                                    style={{
+                                        boxShadow: '0 2px 8px rgba(0, 200, 255, 0.2)',
+                                    }}
+                                >
                                     <LogIn className="h-4 w-4 mr-1" />
                                     Log In
-                                </>
-                            )}
-                        </Button>
-                    </motion.div>
+                                </Button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
         </motion.nav>
-    );
-};
-
-export default Navbar;
+    )
+}
+export default Navbar
