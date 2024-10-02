@@ -37,6 +37,7 @@ Olympus is built using the following cutting-edge technologies:
 ## 🚀 Getting Started
 ### Folder Strucutre
 
+```
 └── 📁olympus
     └── 📁.git
     └── 📁backend
@@ -120,6 +121,7 @@ Olympus is built using the following cutting-edge technologies:
     └── tailwind.config.ts
     └── tsconfig.json
     └── tsconfig.server.json
+```
 
 ### Clone the repository
 
