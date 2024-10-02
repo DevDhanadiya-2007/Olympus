@@ -35,7 +35,95 @@ Olympus is built using the following cutting-edge technologies:
 ---
 
 ## 🚀 Getting Started
+### Folder Strucutre
+```
+```
+└── 📁olympus
+    └── 📁.git
+    └── 📁backend
+        └── 📁server
+            └── 📁controllers
+                └── authController.ts
+                └── serviceController.ts
+            └── 📁middleware
+                └── authMiddleware.ts
+            └── 📁model
+                └── model.ts
+            └── 📁routes
+                └── authRoutes.ts
+                └── walletRoutes.ts
+            └── 📁utils
+                └── database.ts
+                └── passport.ts
+            └── server.ts
+        └── 📁services
+            └── encryption.ts
+            └── mnemonic.ts
+        └── 📁types
+            └── express.d.ts
+    └── 📁src
+        └── 📁app
+            └── 📁api
+                └── 📁auth
+                    └── 📁login
+                        └── page.tsx
+                    └── 📁signup
+                        └── page.tsx
+                    └── 📁user-warning
+                        └── page.tsx
+                └── 📁wallet
+                    └── 📁(wallets)
+                        └── 📁create-wallet
+                            └── page.tsx
+                        └── 📁import-wallet
+                            └── page.tsx
+                    └── layout.tsx
+                    └── page.tsx
+            └── 📁dashboard
+                └── page.tsx
+            └── globals.css
+            └── layout.tsx
+            └── page.tsx
+        └── 📁components
+            └── 📁ui
+                └── button.tsx
+                └── card.tsx
+                └── checkbox.tsx
+                └── dropdown-menu.tsx
+                └── progress.tsx
+                └── tooltip.tsx
+            └── Navbar.tsx
+        └── 📁hooks
+            └── useAuth.tsx
+        └── 📁lib
+            └── dbActions.ts
+            └── indexedDB.ts
+            └── utils.ts
+        └── 📁public
+            └── bg.jpg
+        └── 📁store
+            └── 📁slice
+                └── authSlice.ts
+            └── ReduxProviderWrapper.tsx
+            └── store.ts
+        └── 📁types
+            └── index.d.ts
+    └── .env
+    └── .gitignore
+    └── components.json
+    └── next-env.d.ts
+    └── next.config.mjs
+    └── nodemon.json
+    └── package.json
+    └── pnpm-lock.yaml
+    └── postcss.config.mjs
+    └── README.md
+    └── tailwind.config.ts
+    └── tsconfig.json
+    └── tsconfig.server.json
+```
 
+```
 ### Clone the repository
 
 ```bash
