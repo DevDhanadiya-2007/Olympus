@@ -47,7 +47,7 @@ const googleCallback = async (req: Request, res: Response) => {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: '/',
     });
-    res.redirect('/');
+    res.redirect('/api/auth/google-auth-callback');
 };
 
 const login = async (req: Request, res: Response) => {

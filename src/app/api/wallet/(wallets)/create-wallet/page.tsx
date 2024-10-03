@@ -149,7 +149,7 @@ export default function Page() {
         if (!mnemonic || !isChecked) {
             return
         }
-
+        if (typeof window === "undefined") return;
         const hashKey = "Olympus"
         const key = await createHash(hashKey)
         try {

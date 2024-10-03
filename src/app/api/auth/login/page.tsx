@@ -17,13 +17,13 @@ const emailSchema = z.string().email('Invalid email address');
 const passwordSchema = z.string().min(1, 'Password is required');
 
 export default function LoginPage() {
-    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (email) {
@@ -105,8 +105,36 @@ export default function LoginPage() {
         setShowPassword(!showPassword);
     };
 
-    const googleHandle = async () => {
-        window.open("/api/auth/google", "_self");
+    const googleHandle = () => {
+        const width = 500;
+        const height = 600;
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2.5;
+        const url = '/api/auth/google';
+
+        const popup = window.open(
+            url,
+            'GoogleSignIn',
+            `width=${width},height=${height},left=${left},top=${top}`
+        );
+
+        window.addEventListener('message', (event) => {
+            if (event.origin !== window.location.origin) return;
+
+            if (event.data.type === 'GOOGLE_SIGN_IN_SUCCESS') {
+                if (popup) popup.close();
+                dispatch(setAuthenticated(true));
+                toast.success("Google Sign-In Successful! 🚀", {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+                router.push("/");
+            }
+        });
     }
 
     return (
@@ -212,6 +240,7 @@ export default function LoginPage() {
                         <div className="border-t border-[#4a5568] w-full"></div>
                     </div>
                     <motion.button
+                        type="button"
                         onClick={googleHandle}
                         className="w-full bg-[#4285F4] text-white py-3 px-4 rounded-lg hover:bg-[#3367D6] focus:outline-none focus:ring-2 focus:ring-[#4285F4] focus:ring-opacity-50 transition duration-300 flex items-center justify-center"
                         whileHover={{ scale: 1.05 }}

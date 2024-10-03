@@ -15,10 +15,16 @@ interface StarProps {
     size: string;
     delay: number;
 }
-
+interface LayoutProps {
+    create: React.ReactNode,
+    manage: React.ReactNode,
+    settings: React.ReactNode,
+    children: React.ReactNode
+}
 
 export {
     MnemonicResponse,
     NeumorphicButtonProps,
-    StarProps
+    StarProps,
+    LayoutProps
 }

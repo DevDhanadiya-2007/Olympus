@@ -6,6 +6,7 @@ import { LayoutDashboard, Plus, Pen, Settings, RefreshCw } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Skeleton } from '@/components/ui/skeleton'
+import { LayoutProps } from '@/types'
 
 interface NavItem {
     icon: LucideIcon
@@ -20,17 +21,26 @@ const navItems: NavItem[] = [
     { icon: Settings, title: 'Settings', id: 'settings' },
 ]
 
-export default function DashboardLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default function Layout({ create, manage, settings, children }: LayoutProps) {
     const [activeTab, setActiveTab] = useState('dashboard')
     const [isLoading, setIsLoading] = useState(false)
 
     const handleRefresh = () => {
         setIsLoading(true)
         setTimeout(() => setIsLoading(false), 1000)
+    }
+
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'create':
+                return create
+            case 'manage':
+                return manage
+            case 'settings':
+                return settings
+            default:
+                return children
+        }
     }
 
     return (
@@ -83,7 +93,7 @@ export default function DashboardLayout({
                                 transition={{ duration: 0.3 }}
                                 className="p-4"
                             >
-                                {children}
+                                {renderContent()}
                             </motion.div>
                         )}
                     </AnimatePresence>
