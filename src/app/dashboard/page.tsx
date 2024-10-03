@@ -1,5 +1,5 @@
 export default function page() {
     return (
-        <div></div>
+        <div>This is the Dashboard page.tsx file</div>
     )
 }
