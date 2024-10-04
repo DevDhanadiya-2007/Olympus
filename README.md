@@ -39,7 +39,7 @@ Olympus is built using the following cutting-edge technologies:
 ### Folder Strucutre
 
 ```
-└── 📁olympus
+└── 📁olympus-deploy
     └── 📁.git
     └── 📁backend
         └── 📁server
@@ -55,6 +55,7 @@ Olympus is built using the following cutting-edge technologies:
                 └── walletRoutes.ts
             └── 📁utils
                 └── database.ts
+                └── envExports.ts
                 └── passport.ts
             └── server.ts
         └── 📁services
@@ -66,6 +67,8 @@ Olympus is built using the following cutting-edge technologies:
         └── 📁app
             └── 📁api
                 └── 📁auth
+                    └── 📁google-auth-callback
+                        └── page.tsx
                     └── 📁login
                         └── page.tsx
                     └── 📁signup
@@ -81,6 +84,13 @@ Olympus is built using the following cutting-edge technologies:
                     └── layout.tsx
                     └── page.tsx
             └── 📁dashboard
+                └── 📁@create
+                    └── page.tsx
+                └── 📁@manage
+                    └── page.tsx
+                └── 📁@settings
+                    └── page.tsx
+                └── layout.tsx
                 └── page.tsx
             └── globals.css
             └── layout.tsx
@@ -92,6 +102,7 @@ Olympus is built using the following cutting-edge technologies:
                 └── checkbox.tsx
                 └── dropdown-menu.tsx
                 └── progress.tsx
+                └── skeleton.tsx
                 └── tooltip.tsx
             └── Navbar.tsx
         └── 📁hooks
@@ -112,7 +123,6 @@ Olympus is built using the following cutting-edge technologies:
     └── .env
     └── .gitignore
     └── components.json
-    └── next-env.d.ts
     └── next.config.mjs
     └── nodemon.json
     └── package.json
