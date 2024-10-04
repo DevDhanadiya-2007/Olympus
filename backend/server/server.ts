@@ -27,7 +27,7 @@ const initServer = async () => {
     server.use(cookieParser());
     server.use(express.json({ limit: '10kb' }));
     server.use(cors({
-        origin: "https://olympus-deploy.onrender.com",
+        origin: "*",
         credentials: true,
     }));
     server.use(morgan('dev'));

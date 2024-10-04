@@ -110,7 +110,8 @@ export default function LoginPage() {
         const height = 600;
         const left = window.screenX + (window.outerWidth - width) / 2;
         const top = window.screenY + (window.outerHeight - height) / 2.5;
-        const url = "https://olympus-deploy.onrender.com/api/auth/google"
+        const url = "/api/auth/google"
+
         const popup = window.open(
             url,
             'GoogleSignIn',
