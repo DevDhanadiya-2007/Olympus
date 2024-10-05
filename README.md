@@ -33,6 +33,8 @@ Olympus is built using the following cutting-edge technologies:
 - **Custom Authentication** 🔒 - Secure, efficient, and built from scratch!
 
 ---
+# NOTE: 
+**This Project is Paused for some time.**
 
 ## 🚀 Getting Started
 
